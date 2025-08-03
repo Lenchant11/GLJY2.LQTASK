@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="robots" content="noindex, nofollow" />
+  <title>منتجات للبالغين - الدفع عند الاستلام</title>
+  <!-- 引入中东风格字体 -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  * {
+    box-sizing: border-box; /* 修复布局溢出问题 */
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Cairo', sans-serif;
+    background: #f8f5f0;
+    color: #222;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 20px;
+  }
+
+  .container {
+    max-width: 480px;
+    width: 100%;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 30px 20px;
+    text-align: right;
+    position: relative;
+  }
+
+  h1 {
+    font-size: 24px;
+    color: #b30000;
+    margin-bottom: 15px;
+  }
+
+  p {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 25px;
+  }
+
+  /* 🔴 提示框样式（今日特价） */
+  .cta-alert {
+    background: #ffe5e5; /* 更柔和的背景色 */
+    color: #b30000;       /* 强调但不刺眼 */
+    font-size: 16px;
+    font-weight: 600;
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    text-align: center;
+    border: 1px solid #f2b8b8;
+    animation: pulse 1.8s infinite;
+  }
+
+  @keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.75; }
+    100% { opacity: 1; }
+  }
+
+  /* 🔴 CTA按钮样式 */
+  .cta-button {
+    display: block;
+    width: 100%;
+    background: #e60000;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    text-decoration: none;
+  }
+  
+  .shake-hand {
+  display: inline-block;
+  margin-left: 8px;
+  animation: shake 1.0s infinite;
+  }
+
+  @keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  50% { transform: translateX(3px); }
+  75% { transform: translateX(-2px); }
+  100% { transform: translateX(0); }
+  }
+
+  .cta-button:hover {
+    background: #cc0000;
+  }
+
+  .footer {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #666;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <!-- 页面主文案 -->
+    <h1>منتجات خاصة للكبار فقط</h1>
+	<p>
+  هل تبحث عن طريقة جديدة للاستمتاع؟ نقدم لك أفضل المنتجات الخاصة بالكبار بسرية تامة وبتغليف محايد.
+  ندعم الدفع عند الاستلام، والتوصيل خلال 1-3 أيام.
+	</p>
+
+
+
+    <!-- 热销提示：今日特价，热销中 -->
+    <div class="cta-alert">عرض خاص اليوم - المنتج الأكثر مبيعاً!</div>
+
+    <!-- CTA 按钮：触发 FB 上报 + WhatsApp 跳转 -->
+    <a href="javascript:void(0);" class="cta-button" onclick="handleClick()">
+		<span class="shake-hand">👈</span> اطلب الآن وتواصل مع خدمة العملاء
+	</a>
+  </div>
+
+  <div class="footer">خصوصيتك مضمونة 100٪</div>
+
+  <script>
+  // ✅ 在最前面提取 URL 参数中的 pixelID（更清晰）
+  const params = new URLSearchParams(window.location.search);
+  const pixelID = params.get("pixel");
+
+  // WhatsApp 账号数组
+  const waAccounts = [
+    "971501234567",
+    "971502345678",
+    "971503456789"
+  ];
+
+  // 随机选择 WhatsApp 账号
+  function getRandomAccount() {
+    const index = Math.floor(Math.random() * waAccounts.length);
+    return waAccounts[index];
+  }
+
+  // CTA 点击处理
+  function handleClick() {
+    if (pixelID && typeof fbq === 'function') {
+      fbq('init', pixelID);
+      fbq('track', 'ClickButton');
+    }
+
+    const waNumber = getRandomAccount();
+    const waURL = `https://wa.me/${waNumber}`;
+    setTimeout(() => {
+      window.location.href = waURL;
+    }, 300);
+  }
+
+  // 加载 Facebook Pixel 脚本并初始化
+  (function() {
+    if (!pixelID) return;
+    !function(f,b,e,v,n,t,s){
+      if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)
+    }(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+
+    fbq('init', pixelID);
+    fbq('track', 'PageView');
+  })();
+</script>
+
+  
+</body>
+</html>
