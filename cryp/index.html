@@ -33,7 +33,7 @@
     // ✅ 构建 WhatsApp.com URL
     function getWhatsAppURL(account, message) {
       const encodedMessage = encodeURIComponent(message);
-      return `https://www.whatsapp.com/send?phone=${account}&text=${encodedMessage}`;
+      return `https://api.whatsapp.com/send?phone=${account}&text=${encodedMessage}`;
     }
 
     // ✅ 自动跳转
