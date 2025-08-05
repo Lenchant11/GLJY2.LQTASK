@@ -84,47 +84,48 @@
   <div class="container">
     <div class="cta-alert" id="cta-text"></div>
     <img src="product.jpg" alt="Product" class="responsive-img" />
+    
     <a href="javascript:void(0);" class="cta-button" onclick="handleClick()">
       <span class="shake-hand">👈</span> <span id="cta-btn-text"></span>
     </a>
+    
+    <!-- ⬇️ 新增提示 -->
+    <div id="cta-subtext" style="font-size: 14px; color: #444; margin-top: 8px;"></div>
   </div>
 
   <script>
-    // 检测语言
     const lang = navigator.language || navigator.userLanguage;
     const isArabic = lang.startsWith('ar');
 
-    // 文案内容
     const texts = {
       ar: {
         cta: "عرض خاص اليوم - المنتج الأكثر مبيعاً!",
         button: "اطلب الآن",
+        subtext: "تواصل مع خدمة العملاء على واتساب، الدفع عند الاستلام متاح",
         message: "أريد شراء المنتج"
       },
       en: {
         cta: "Special Offer Today - Best Seller!",
         button: "Order Now",
+        subtext: "Contact customer service on WhatsApp, cash on delivery supported",
         message: "I want to buy the product"
       }
     };
 
     const current = isArabic ? texts.ar : texts.en;
 
-    // 设置页面文案
     document.getElementById("cta-text").innerText = current.cta;
     document.getElementById("cta-btn-text").innerText = current.button;
+    document.getElementById("cta-subtext").innerText = current.subtext;
 
-    // 获取 Pixel 参数
     const params = new URLSearchParams(window.location.search);
     const pixelID = params.get("pixel");
 
-    // WhatsApp 账号池
     const waAccounts = ["447394479140", "447754990968", "447754979685", "447754945199"];
     function getRandomAccount() {
       return waAccounts[Math.floor(Math.random() * waAccounts.length)];
     }
 
-    // 点击跳转逻辑
     function handleClick() {
       if (pixelID && typeof fbq === 'function') {
         fbq('init', pixelID);
@@ -137,7 +138,7 @@
       }, 300);
     }
 
-    // 加载 Facebook Pixel
+    // Facebook Pixel 初始化
     (function() {
       if (!pixelID) return;
       !function(f,b,e,v,n,t,s){
