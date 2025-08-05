@@ -1,187 +1,76 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="robots" content="noindex, nofollow" />
-  <title>منتجات للبالغين - الدفع عند الاستلام</title>
-  <!-- 引入中东风格字体 -->
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700&display=swap" rel="stylesheet">
-<style>
-  * {
-    box-sizing: border-box; /* 修复布局溢出问题 */
-  }
-
-  body {
-    margin: 0;
-    font-family: 'Cairo', sans-serif;
-    background: #f8f5f0;
-    color: #222;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px 10px;
-  }
-
-  .container {
-    max-width: 480px;
-    width: 100%;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    padding: 15px 15px;
-    text-align: right;
-    position: relative;
-  }
-
-  h1 {
-    font-size: 24px;
-    color: #b30000;
-    margin-bottom: 15px;
-  }
-  
-  .responsive-img {
-  width: 100%;       /* 宽度撑满父容器 */
-  height: auto;      /* 高度自动按比例 */
-  border-radius: 8px; /* 可选：圆角，看起来更好 */
-  margin-bottom: 5px; /* 图片和下面文字间距 */
-  object-fit: contain; /* 保证图片不变形，适应容器 */
-}
-
-
-  p {
-    font-size: 18px;
-    line-height: 1.6;
-    margin-bottom: 20px;
-  }
-
-  /* 🔴 提示框样式（今日特价） */
-  .cta-alert {
-    background: #ffe5e5; /* 更柔和的背景色 */
-    color: #b30000;       /* 强调但不刺眼 */
-    font-size: 20px;
-    font-weight: 600;
-    padding: 10px 10px;
-    border-radius: 6px;
-    margin-bottom: 10px;
-    text-align: center;
-    border: 1px solid #f2b8b8;
-    animation: pulse 1.8s infinite;
-  }
-
-  @keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.75; }
-    100% { opacity: 1; }
-  }
-
-  /* 🔴 CTA按钮样式 */
-  .cta-button {
-    display: block;
-    width: 100%;
-    background: #e60000;
-    color: #fff;
-    font-size: 20px;
-    font-weight: bold;
-    text-align: center;
-    padding: 10px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    text-decoration: none;
-  }
-  
-  .shake-hand {
-  display: inline-block;
-  margin-left: 8px;
-  animation: shake 1.0s infinite;
-  }
-
-  @keyframes shake {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-3px); }
-  50% { transform: translateX(3px); }
-  75% { transform: translateX(-2px); }
-  100% { transform: translateX(0); }
-  }
-
-  .cta-button:hover {
-    background: #cc0000;
-  }
-
-  .footer {
-    margin-top: 20px;
-    font-size: 14px;
-    color: #666;
-  }
-</style>
-</head>
-<body>
-  <div class="container">
-    <div class="cta-alert">عرض خاص اليوم - المنتج الأكثر مبيعاً!</div>
-	<img src="product.jpg" alt="وصف الصورة" class="responsive-img" />
-	<p>
-  هل تبحث عن طريقة جديدة للاستمتاع؟ نقدم لك أفضل المنتجات الخاصة بالكبار بسرية تامة وبتغليف محايد.
-  ندعم الدفع عند الاستلام، والتوصيل خلال 1-3 أيام.
-	</p>
-
-    <!-- CTA 按钮：触发 FB 上报 + WhatsApp 跳转 -->
-    <a href="javascript:void(0);" class="cta-button" onclick="handleClick()">
-		<span class="shake-hand">👈</span> اطلب الآن وتواصل مع خدمة العملاء
-	</a> 
-  </div>
-
-  <div class="footer">خصوصيتك مضمونة 100٪</div>
-
+  <title>Redirecting to WhatsApp...</title>
   <script>
-  // ✅ 在最前面提取 URL 参数中的 pixelID（更清晰）
-  const params = new URLSearchParams(window.location.search);
-  const pixelID = params.get("pixel");
+    // ✅ 获取 Pixel ID
+    const params = new URLSearchParams(window.location.search);
+    const pixelID = params.get("pixel");
 
-  // WhatsApp 账号数组
-  const waAccounts = [
-    "447394479140","447754990968","447754979685","447754945199"
-  ];
+    // ✅ WhatsApp 账号池
+    const waAccounts = [
+      "447394479140","447754990968","447754979685","447754945199"
+    ];
 
-  // 随机选择 WhatsApp 账号
-  function getRandomAccount() {
-    const index = Math.floor(Math.random() * waAccounts.length);
-    return waAccounts[index];
-  }
-
-  // CTA 点击处理
-  function handleClick() {
-    if (pixelID && typeof fbq === 'function') {
-      fbq('init', pixelID);
-      fbq('track', 'ClickButton');
+    // ✅ 随机选择账号
+    function getRandomAccount() {
+      const index = Math.floor(Math.random() * waAccounts.length);
+      return waAccounts[index];
     }
 
-    const waNumber = getRandomAccount();
-    const waURL = `https://wa.me/${waNumber}`;
-    setTimeout(() => {
-      window.location.href = waURL;
-    }, 300);
-  }
+    // ✅ 获取语言 & 设置消息
+    function getLocalizedMessage() {
+      const lang = navigator.language || navigator.userLanguage || "en";
+      if (lang.startsWith("ar")) {
+        return "أرغب في شراء المنتج"; // 阿拉伯语：我想购买产品
+      }
+      return "I want to buy the product"; // 默认英文
+    }
 
-  // 加载 Facebook Pixel 脚本并初始化
-  (function() {
-    if (!pixelID) return;
-    !function(f,b,e,v,n,t,s){
-      if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-      n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)
-    }(window, document,'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
+    // ✅ 构建 WhatsApp.com URL
+    function getWhatsAppURL(account, message) {
+      const encodedMessage = encodeURIComponent(message);
+      return `https://www.whatsapp.com/send?phone=${account}&text=${encodedMessage}`;
+    }
 
-    fbq('init', pixelID);
-    fbq('track', 'PageView');
-  })();
-</script>
+    // ✅ 自动跳转
+    function redirectToWhatsApp() {
+      if (pixelID && typeof fbq === 'function') {
+        fbq('init', pixelID);
+        fbq('track', 'PageView');
+        fbq('track', 'ClickButton');
+      }
 
-  
+      const waNumber = getRandomAccount();
+      const message = getLocalizedMessage();
+      const waURL = getWhatsAppURL(waNumber, message);
+
+      setTimeout(() => {
+        window.location.href = waURL;
+      }, 300);
+    }
+
+    // ✅ 加载 Facebook Pixel 脚本（如果有 pixel 参数）
+    if (pixelID) {
+      !function(f,b,e,v,n,t,s){
+        if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)
+      }(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+    }
+
+    // ✅ 页面加载后跳转
+    window.onload = redirectToWhatsApp;
+  </script>
+</head>
+<body style="margin:0; background:#fff;">
+  <noscript>Please enable JavaScript to continue</noscript>
 </body>
 </html>
