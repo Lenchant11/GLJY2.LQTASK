@@ -3,58 +3,143 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="robots" content="noindex, nofollow" />
-  <title>Redirecting to WhatsApp...</title>
+  <title>Special Offer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Cairo', sans-serif;
+      background: #f8f5f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
+    }
+    .container {
+      max-width: 480px;
+      width: 100%;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      padding: 15px;
+      text-align: center;
+    }
+    .cta-alert {
+      background: #ffe5e5;
+      color: #b30000;
+      font-size: 20px;
+      font-weight: 600;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #f2b8b8;
+      animation: pulse 1.8s infinite;
+      margin-bottom: 10px;
+    }
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.75; }
+      100% { opacity: 1; }
+    }
+    .responsive-img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      object-fit: contain;
+    }
+    .cta-button {
+      display: block;
+      width: 100%;
+      background: #e60000;
+      color: #fff;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      text-decoration: none;
+    }
+    .cta-button:hover {
+      background: #cc0000;
+    }
+    .shake-hand {
+      display: inline-block;
+      margin-left: 8px;
+      animation: shake 1.0s infinite;
+    }
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-3px); }
+      50% { transform: translateX(3px); }
+      75% { transform: translateX(-2px); }
+      100% { transform: translateX(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="cta-alert" id="cta-text"></div>
+    <img src="product.jpg" alt="Product" class="responsive-img" />
+    <a href="javascript:void(0);" class="cta-button" onclick="handleClick()">
+      <span class="shake-hand">👈</span> <span id="cta-btn-text"></span>
+    </a>
+  </div>
+
   <script>
-    // ✅ 获取 Pixel ID
+    // 检测语言
+    const lang = navigator.language || navigator.userLanguage;
+    const isArabic = lang.startsWith('ar');
+
+    // 文案内容
+    const texts = {
+      ar: {
+        cta: "عرض خاص اليوم - المنتج الأكثر مبيعاً!",
+        button: "اطلب الآن",
+        message: "أريد شراء المنتج"
+      },
+      en: {
+        cta: "Special Offer Today - Best Seller!",
+        button: "Order Now",
+        message: "I want to buy the product"
+      }
+    };
+
+    const current = isArabic ? texts.ar : texts.en;
+
+    // 设置页面文案
+    document.getElementById("cta-text").innerText = current.cta;
+    document.getElementById("cta-btn-text").innerText = current.button;
+
+    // 获取 Pixel 参数
     const params = new URLSearchParams(window.location.search);
     const pixelID = params.get("pixel");
 
-    // ✅ WhatsApp 账号池
-    const waAccounts = [
-      "447394479140","447754990968","447754979685","447754945199"
-    ];
-
-    // ✅ 随机选择账号
+    // WhatsApp 账号池
+    const waAccounts = ["447394479140", "447754990968", "447754979685", "447754945199"];
     function getRandomAccount() {
-      const index = Math.floor(Math.random() * waAccounts.length);
-      return waAccounts[index];
+      return waAccounts[Math.floor(Math.random() * waAccounts.length)];
     }
 
-    // ✅ 获取语言 & 设置消息
-    function getLocalizedMessage() {
-      const lang = navigator.language || navigator.userLanguage || "en";
-      if (lang.startsWith("ar")) {
-        return "أرغب في شراء المنتج"; // 阿拉伯语：我想购买产品
-      }
-      return "I want to buy the product"; // 默认英文
-    }
-
-    // ✅ 构建 WhatsApp.com URL
-    function getWhatsAppURL(account, message) {
-      const encodedMessage = encodeURIComponent(message);
-      return `https://api.whatsapp.com/send?phone=${account}&text=${encodedMessage}`;
-    }
-
-    // ✅ 自动跳转
-    function redirectToWhatsApp() {
+    // 点击跳转逻辑
+    function handleClick() {
       if (pixelID && typeof fbq === 'function') {
         fbq('init', pixelID);
-        fbq('track', 'PageView');
         fbq('track', 'ClickButton');
       }
-
       const waNumber = getRandomAccount();
-      const message = getLocalizedMessage();
-      const waURL = getWhatsAppURL(waNumber, message);
-
+      const waURL = `https://api.whatsapp.com/send?phone=${waNumber}&text=${encodeURIComponent(current.message)}`;
       setTimeout(() => {
         window.location.href = waURL;
       }, 300);
     }
 
-    // ✅ 加载 Facebook Pixel 脚本（如果有 pixel 参数）
-    if (pixelID) {
+    // 加载 Facebook Pixel
+    (function() {
+      if (!pixelID) return;
       !function(f,b,e,v,n,t,s){
         if(f.fbq)return;n=f.fbq=function(){n.callMethod?
         n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -64,13 +149,10 @@
         s.parentNode.insertBefore(t,s)
       }(window, document,'script',
         'https://connect.facebook.net/en_US/fbevents.js');
-    }
 
-    // ✅ 页面加载后跳转
-    window.onload = redirectToWhatsApp;
+      fbq('init', pixelID);
+      fbq('track', 'PageView');
+    })();
   </script>
-</head>
-<body style="margin:0; background:#fff;">
-  <noscript>Please enable JavaScript to continue</noscript>
 </body>
 </html>
